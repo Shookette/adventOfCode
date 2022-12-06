@@ -1,4 +1,12 @@
+const { readFile } = require('fs/promises');
+const { join } = require('path');
+
 elfCountingCalorieFunction = (elfSnacks) => elfSnacks.reduce((total, snack) => total + snack, 0)
+
+async function read(filename) {
+  const buffer = await readFile(join(__dirname, filename)); 
+  return buffer.toString().trim();
+}
 
 describe("Calorie Couting", () => {
   it("should return the max quantity of snack's calories for an elf", () => {
@@ -12,14 +20,17 @@ describe("Calorie Couting", () => {
     expect(returnValue).toEqual(6000)
   })
 
-  it("should return the max quantity of snack's calories for an elf", () => {
+  it("should open a test file", async () => {
     // arrange
-    const elfSnacks = [1000, 2000, 3000];
+    const filename = "./toto";
 
     // act
-    const returnValue = max(elfSnacks)
+    const returnValue = await read(filename);
 
     // assert
-    expect(returnValue).toEqual(6000)
+    expect(typeof returnValue).toBe('string')
+    expect(returnValue).toEqual('toto')
   })
+
+
 })
